@@ -8,6 +8,6 @@ def getcode():
     return "Hello!"
 
 @app.route('/plus/<int:a>/<int:b>')
-def get_code(a, b):
+def plus(a, b):
     c = a + b
     return str(c)
