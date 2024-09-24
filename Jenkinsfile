@@ -29,6 +29,8 @@ pipeline {
 
                     git url: "https://github.com/kitti-best/dont-look-its-test-repo-for-testing-another-repo"
                     sh "robot robot_test.robot"
+                    sh "ls"
+                    sh "pwd"
 
                     sh "docker push ${IMAGE_NAME}"
                     sh "docker ps -aq"
