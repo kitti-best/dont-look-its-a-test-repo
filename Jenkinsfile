@@ -8,7 +8,7 @@ pipeline {
         stage("Unit test") {
             agent { label "vm2" }
             steps {
-                sh "coverage run -m app/unittest unit_test.py -v"
+                sh "coverage run -m unittest unit_test.py -v"
                 sh "coverage report -m"
             }
 
