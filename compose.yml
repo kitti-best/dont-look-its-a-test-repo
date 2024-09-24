@@ -1,6 +1,7 @@
 services:
   web:
-    build: .
+    build:
+      context: app
     image: test_app
     ports: 
-      - "5000:5000"
+      - "8090:5000"
