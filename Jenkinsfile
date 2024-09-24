@@ -46,7 +46,8 @@ pipeline {
                 ){
                     sh "docker login --username ${gitUsername} --password ${gitPassword}"
                     // sh "docker build . -t ${IMAGE_NAME}"
-                    sh "docker run -d -p 80:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
+                    sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
+                    // Use 
                     // sh "echo test using robot"
                     // sh "docker push ${IMAGE_NAME}"
                 }
