@@ -44,7 +44,7 @@ pipeline {
                         usernameVariable: "gitUsername",
                     )]
                 ){
-                    sh "docker login --username ${gitUsername} --password ${gitPassword}"
+                    sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
                     // sh "docker build . -t ${IMAGE_NAME}"
                     sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
                     // Use 
