@@ -28,9 +28,9 @@ pipeline {
                     sh "echo test using robot"
                     sh "docker push ${IMAGE_NAME}"
                     sh "docker ps -aq"
-                    sh "docker stop $(docker ps -aq)"
-                    sh "docker rm $(docker ps -aq)"
-                    sh "docker rmi $(docker images -q)"
+                    sh "docker stop \$(docker ps -aq)"
+                    sh "docker rm \$(docker ps -aq)"
+                    sh "docker rmi \$(docker images -q)"
                 }
             }
         }
