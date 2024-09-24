@@ -6,7 +6,6 @@ pipeline {
     stages {
         stage('Build Image') {
             steps {
-                sh "ls"
                 sh "echo ${env.APP_NAME}"
                 sh "docker version"
             }
