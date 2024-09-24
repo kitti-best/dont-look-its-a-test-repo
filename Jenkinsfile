@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Delivery') {
             steps {
-                withcredentials(
+                withCredentials(
                     [usernamePassword(
                         credentialId: 'user_01',
                         passwordVariable: 'gitPassword',
