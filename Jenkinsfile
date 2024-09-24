@@ -2,7 +2,7 @@ pipeline {
     agent none
     environment {
         APP_NAME = "simple api"
-        IMAGE_NAME = "ghcr.io/kitti-best/SDPX-Jenkins-Container"
+        IMAGE_NAME = "ghcr.io/kitti-best/sdpx-jenkins-container"
     }
     stages {
         stage("Unit test") {
