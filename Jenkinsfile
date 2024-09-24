@@ -27,6 +27,10 @@ pipeline {
                     sh "docker run -p 80:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
                     sh "echo test using robot"
                     sh "docker push ${IMAGE_NAME}"
+                    sh "docker ps -aq"
+                    sh "docker stop $(docker ps -aq)"
+                    sh "docker rm $(docker ps -aq)"
+                    sh "docker rmi $(docker images -q)"
                 }
             }
         }
@@ -42,7 +46,7 @@ pipeline {
                 ){
                     sh "docker login --username ${gitUsername} --password ${gitPassword}"
                     // sh "docker build . -t ${IMAGE_NAME}"
-                    sh "docker run -p 80:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
+                    sh "docker run -d -p 80:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
                     // sh "echo test using robot"
                     // sh "docker push ${IMAGE_NAME}"
                 }
