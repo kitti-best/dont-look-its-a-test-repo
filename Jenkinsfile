@@ -25,7 +25,6 @@ pipeline {
                 ){
                     sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
                     sh "docker build app/ -t ${IMAGE_NAME}"
-                    sh "docker stop \$(docker ps -aq)"
                     sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
 
                     git url: "https://github.com/kitti-best/dont-look-its-test-repo-for-testing-another-repo"
@@ -50,7 +49,6 @@ pipeline {
                     )]
                 ){
                     sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
-                    sh "docker stop \$(docker ps -aq)"
                     sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
                     // Use ssh -L 80:127.0.0.0.1:8080 kitti@192.168.182.103 to ssh
                 }
