@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import jsonify
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -7,7 +6,10 @@ app = Flask(__name__)
 def getcode():
     return "Hello!"
 
-@app.route('/plus/<int:a>/<int:b>')
+@app.route('/plus/<a>/<b>')
 def plus(a, b):
-    c = a + b
-    return str(c)
+    try:
+        c = float(a) + float(b)
+    except ValueError:
+        c = f"Error can not perform PLUS operation between {a} and {b}"
+    return {"result":c}
