@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent vm2
     environment {
         APP_NAME = "test app name"
     }
