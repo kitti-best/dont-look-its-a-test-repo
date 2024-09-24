@@ -8,7 +8,8 @@ pipeline {
         stage("Unit test") {
             agent { label "vm2" }
             steps {
-                sh "echo vm2 work!"
+                sh "coverage run -m app/unittest unit_test.py -v"
+                sh "coverage report -m"
             }
 
         }
@@ -25,7 +26,10 @@ pipeline {
                     sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
                     sh "docker build app/ -t ${IMAGE_NAME}"
                     sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
-                    sh "echo test using robot"
+
+                    git url: "https://github.com/kitti-best/dont-look-its-test-repo-for-testing-another-repo"
+                    sh "robot robot_test.robot"
+
                     sh "docker push ${IMAGE_NAME}"
                     sh "docker ps -aq"
                     sh "docker stop \$(docker ps -aq)"
@@ -45,11 +49,8 @@ pipeline {
                     )]
                 ){
                     sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
-                    // sh "docker build . -t ${IMAGE_NAME}"
                     sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
-                    // Use 
-                    // sh "echo test using robot"
-                    // sh "docker push ${IMAGE_NAME}"
+                    // Use ssh -L 80:127.0.0.0.1:8080 kitti@192.168.182.103 to ssh
                 }
             }
         }

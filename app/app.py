@@ -12,4 +12,4 @@ def plus(a, b):
         c = float(a) + float(b)
     except ValueError:
         c = f"Error can not perform PLUS operation between {a} and {b}"
-    return {"result":c}
+    return str(c)
