@@ -20,12 +20,13 @@ pipeline {
             steps {
                 withCredentials(
                     [usernamePassword(
-                        credentialId: 'user_01',
+                        credentialsId: 'user_01',
                         passwordVariable: 'gitPassword',
                         usernameVariable: 'gitUsername',
                     )]
-                )
-                sh "echo ${gitPassword} ${gitUsername}"
+                ){
+                    sh "echo ${gitPassword} ${gitUsername}"
+                }
             }
         }
     }
