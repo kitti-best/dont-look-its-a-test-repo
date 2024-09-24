@@ -1,4 +1,5 @@
 pipeline {
+    agent none
     environment {
         APP_NAME = "simple api"
         IMAGE_NAME = "ghcr.io/kitti-best/SDPX-Jenkins-Container"
