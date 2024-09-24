@@ -24,7 +24,7 @@ pipeline {
                 ){
                     sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
                     sh "docker build app/ -t ${IMAGE_NAME}"
-                    sh "docker run -d -p 80:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
+                    sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
                     sh "echo test using robot"
                     sh "docker push ${IMAGE_NAME}"
                     sh "docker ps -aq"
