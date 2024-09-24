@@ -8,6 +8,7 @@ pipeline {
             steps {
                 sh "ls"
                 sh "echo ${env.APP_NAME}"
+                sh "docker version"
             }
         }
     }
