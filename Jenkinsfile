@@ -1,31 +1,49 @@
 pipeline {
-    agent { label 'vm2' }
     environment {
         APP_NAME = "simple api"
+        IMAGE_NAME = "ghcr.io/kitti-best/SDPX-Jenkins-Container"
     }
     stages {
-        stage('Build Image') {
+        stage("Unit test") {
+            agent { label "vm2" }
             steps {
-                sh "echo ${env.APP_NAME}"
-                sh "docker version"
-                sh "docker-compose up --build -d"
+                sh "echo vm2 work!"
             }
+
         }
-        stage('Test') {
-            steps {
-                sh "echo Test stage"
-            }
-        }
-        stage('Delivery') {
+        stage("Robot test") {
+            agent { label "vm2" }
             steps {
                 withCredentials(
                     [usernamePassword(
-                        credentialsId: 'user_01',
-                        passwordVariable: 'gitPassword',
-                        usernameVariable: 'gitUsername',
+                        credentialsId: "user_01",
+                        passwordVariable: "gitPassword",
+                        usernameVariable: "gitUsername",
                     )]
                 ){
-                    sh "echo ${gitPassword} ${gitUsername}"
+                    sh "docker login --username ${gitUsername} --password ${gitPassword}"
+                    sh "docker build . -t ${IMAGE_NAME}"
+                    sh "docker run -p 80:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
+                    sh "echo test using robot"
+                    sh "docker push ${IMAGE_NAME}"
+                }
+            }
+        }
+        stage("Create Docker Container") {
+            agent { label "vm3" }
+            steps {
+                withCredentials(
+                    [usernamePassword(
+                        credentialsId: "user_01",
+                        passwordVariable: "gitPassword",
+                        usernameVariable: "gitUsername",
+                    )]
+                ){
+                    sh "docker login --username ${gitUsername} --password ${gitPassword}"
+                    // sh "docker build . -t ${IMAGE_NAME}"
+                    sh "docker run -p 80:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
+                    // sh "echo test using robot"
+                    // sh "docker push ${IMAGE_NAME}"
                 }
             }
         }
