@@ -26,10 +26,12 @@ pipeline {
                     sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
                     sh "docker build app/ -t ${IMAGE_NAME}"
                     
-                    try {
-                        sh "docker stop \$(docker ps -aq)"
-                    } catch (err) {
-                        echo "No container to stop"
+                    script {
+                        try {
+                            sh "docker stop \$(docker ps -aq)"
+                        } catch (err) {
+                            echo "No container to stop"
+                        }
                     }
 
                     sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
@@ -39,13 +41,15 @@ pipeline {
 
                     sh "docker push ${IMAGE_NAME}"
                     sh "docker ps -aq"
-                    try {
-                        sh "docker stop \$(docker ps -aq)"
-                        sh "docker stop \$(docker ps -aq)"
-                        sh "docker rm \$(docker ps -aq)"
-                        sh "docker rmi \$(docker images -q)"
-                    } catch (err) {
-                        echo "No container to stop"
+                    script {
+                        try {
+                            sh "docker stop \$(docker ps -aq)"
+                            sh "docker stop \$(docker ps -aq)"
+                            sh "docker rm \$(docker ps -aq)"
+                            sh "docker rmi \$(docker images -q)"
+                        } catch (err) {
+                            echo "No container to stop"
+                        }
                     }
                 }
             }
@@ -60,14 +64,16 @@ pipeline {
                         usernameVariable: "gitUsername",
                     )]
                 ){  
-                try {
-                    sh "docker stop \$(docker ps -aq)"
-                } catch (err) {
-                    echo "No container to stop"
-                }
-                    sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
-                    sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
-                    // Use ssh -L 80:127.0.0.0.1:8080 kitti@192.168.182.103 to ssh
+                script {
+                    try {
+                        sh "docker stop \$(docker ps -aq)"
+                    } catch (err) {
+                        echo "No container to stop"
+                    }
+                        sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
+                        sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
+                        // Use ssh -L 80:127.0.0.0.1:8080 kitti@192.168.182.103 to ssh
+                    }
                 }
             }
         }
