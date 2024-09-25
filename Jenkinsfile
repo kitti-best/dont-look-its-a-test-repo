@@ -25,6 +25,13 @@ pipeline {
                 ){
                     sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
                     sh "docker build app/ -t ${IMAGE_NAME}"
+                    
+                    try {
+                        sh "docker stop \$(docker ps -aq)"
+                    } catch (err) {
+                        echo "No container to stop"
+                    }
+
                     sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
 
                     git url: "https://github.com/kitti-best/dont-look-its-test-repo-for-testing-another-repo"
