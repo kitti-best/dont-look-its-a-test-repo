@@ -40,7 +40,6 @@ pipeline {
                     sh "robot robot_test.robot"
 
                     sh "docker push ${IMAGE_NAME}"
-                    sh "docker ps -aq"
                     script {
                         try {
                             sh "docker stop \$(docker ps -aq)"
@@ -64,16 +63,17 @@ pipeline {
                         usernameVariable: "gitUsername",
                     )]
                 ){  
-                script {
-                    try {
-                        sh "docker stop \$(docker ps -aq)"
-                    } catch (err) {
-                        echo "No container to stop"
+                    script {
+                        try {
+                            sh "docker stop \$(docker ps -aq)"
+                        } catch (err) {
+                            echo "No container to stop"
+                        }   
                     }
-                        sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
-                        sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
-                        // Use ssh -L 80:127.0.0.0.1:8080 kitti@192.168.182.103 to ssh
-                    }
+                    sh "docker login --username ${gitUsername} --password ${gitPassword} ghcr.io"
+                    sh "docker image pull ${IMAGE_NAME}"  // HOST:CONTAINER
+                    sh "docker run -d -p 8080:5000 ${IMAGE_NAME}"  // HOST:CONTAINER
+                    // Use ssh -L 80:127.0.0.0.1:8080 kitti@192.168.182.103 to ssh
                 }
             }
         }
